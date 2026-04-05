@@ -340,23 +340,124 @@ footer{position:relative;z-index:2;border-top:1px solid var(--bsoft);
 ::-webkit-scrollbar-track{background:#030603}
 ::-webkit-scrollbar-thumb{background:rgba(191,255,0,.2);border-radius:2px}
 
-@media(max-width:960px){
-  nav{padding:18px 24px}section{padding:100px 24px 80px}
-  .wgrid{grid-template-columns:1fr}.pillars{flex-direction:column;gap:32px}
-  .pillar{border-right:none;border-bottom:1px solid var(--bsoft);padding-bottom:32px;margin-right:0;padding-right:0}
-  .pillar:last-child{border-bottom:none}
-  .pf-columns{grid-template-columns:1fr;gap:48px}
+/* ── MOBILE HAMBURGER ── */
+.hamburger{display:none;flex-direction:column;gap:5px;background:none;border:none;
+  cursor:pointer;padding:6px;z-index:200}
+.hamburger span{display:block;width:24px;height:2px;background:var(--lime);
+  border-radius:2px;transition:transform .3s,opacity .3s}
+.hamburger.open span:nth-child(1){transform:translateY(7px) rotate(45deg)}
+.hamburger.open span:nth-child(2){opacity:0}
+.hamburger.open span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
+
+.mobile-menu{
+  display:none;
+  position:fixed;top:0;left:0;right:0;bottom:0;z-index:150;
+  background:rgba(3,6,3,.97);backdrop-filter:blur(24px);
+  flex-direction:column;align-items:center;justify-content:center;gap:48px;
+  opacity:0;pointer-events:none;transition:opacity .35s ease;
+}
+.mobile-menu.open{opacity:1;pointer-events:all}
+.mobile-menu a{
+  font-family:'DM Mono',monospace;font-size:13px;letter-spacing:.32em;
+  text-transform:uppercase;color:var(--t2);text-decoration:none;
+  transition:color .25s;
+}
+.mobile-menu a:hover{color:var(--lime)}
+.mobile-menu-close{
+  position:absolute;top:24px;right:24px;
+  background:none;border:none;color:var(--lime);font-size:22px;cursor:pointer;
+  font-family:'DM Mono',monospace;
+}
+
+@media(max-width:768px){
+  /* hide cursor entirely on mobile */
+  #cur{display:none!important}
+  body{cursor:auto!important}
+  *{cursor:auto!important}
+
+  /* nav: show hamburger, hide desktop links */
+  nav{padding:16px 24px}
+  .nav-links{display:none}
+  .hamburger{display:flex}
+  .mobile-menu{display:flex}
+
+  /* sections */
+  section{padding:100px 20px 72px}
+  .hero{padding-top:130px;padding-bottom:72px}
+
+  /* hero text smaller */
+  .hero-title{font-size:clamp(52px,14vw,80px)}
+  .hero-sub{font-size:11.5px;max-width:100%}
+
+  /* thesis */
+  .t-stmt{font-size:clamp(28px,7vw,42px)}
+  .pillars{flex-direction:column;gap:28px}
+  .pillar{border-right:none;border-bottom:1px solid var(--bsoft);
+    padding-bottom:28px;margin-right:0;padding-right:0}
+  .pillar:last-child{border-bottom:none;padding-bottom:0}
+
+  /* what we do */
+  .wh{font-size:clamp(32px,8vw,52px)}
+  .wd{font-size:11.5px;max-width:100%;margin-bottom:48px}
+  .wgrid{grid-template-columns:1fr;gap:16px}
+  .gcard{padding:32px 28px}
+
+  /* portfolio */
+  .pfh{font-size:clamp(32px,8vw,52px);margin-bottom:48px}
+  .pf-columns{grid-template-columns:1fr!important;gap:40px}
   .pf-divider{display:none}
-  .pf-col{padding:0}
-  .sdiv{margin:0 24px}
-  footer{flex-direction:column;gap:16px;text-align:center;padding:36px 24px}
-  .closing{padding:80px 24px}
+  .pf-col{padding:0!important}
+  /* on mobile: 1-col card grid, auto height */
+  .pfg{grid-template-columns:1fr 1fr!important}
+  .acard{height:120px!important}
+  .acard{height:auto!important;padding:18px 20px 16px;
+    flex-direction:column;align-items:flex-start;gap:0}
+  .alogo{margin-bottom:0!important}
+  .ainfo{flex:1;min-width:0}
+
+  /* closing */
+  .closing{padding:72px 20px;text-align:center}
+  .closing-title{font-size:clamp(28px,7vw,48px)}
+  .closing-sub{font-size:11px;max-width:100%}
+  .closing-label{font-size:9px}
+
+  /* rata kiri semua */
+  section{align-items:flex-start;text-align:left}
+  .hero{align-items:flex-start}
+  .hero-tag{text-align:left}
+  .hero-sub{text-align:left}
+  .hero-badge{align-self:flex-start}
+  .slbl{align-self:flex-start}
+  .t-stmt{text-align:left}
+  .wh{text-align:left}
+  .wd{text-align:left}
+  .pfh{text-align:left}
+  .closing{align-items:flex-start;text-align:left}
+  .closing-label{justify-content:flex-start}
+  .closing-title{text-align:left}
+  .closing-sub{text-align:left;margin:0 0 40px}
+  .closing-badge{align-self:flex-start}
+
+  /* divider */
+  .sdiv{margin:0 20px}
+
+  /* footer */
+  footer{flex-direction:column;gap:12px;text-align:center;padding:32px 20px}
 }
 </style>
 </head>
 <body>
 <div class="noise"></div>
 <div id="cur"><div id="cring"></div><div id="cdot"></div></div>
+
+<!-- Mobile menu overlay -->
+<div class="mobile-menu" id="mobileMenu">
+  <button class="mobile-menu-close" id="menuClose">✕</button>
+  <a href="#thesis" onclick="closeMobileMenu()">Thesis</a>
+  <a href="#what" onclick="closeMobileMenu()">What We Do</a>
+  <a href="#portfolio" onclick="closeMobileMenu()">Portfolio</a>
+  <a href="#closing" onclick="closeMobileMenu()">Closing</a>
+</div>
 
 <nav>
   <a href="#" class="nav-logo">
@@ -368,6 +469,9 @@ footer{position:relative;z-index:2;border-top:1px solid var(--bsoft);
     <li><a href="#what">What We Do</a></li>
     <li><a href="#portfolio">Portfolio</a></li>
   </ul>
+  <button class="hamburger" id="hamburger" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
 </nav>
 
 <main>
@@ -574,6 +678,15 @@ const obs=new IntersectionObserver(entries=>{
   entries.forEach(e=>{e.isIntersecting?e.target.classList.add('on'):e.target.classList.remove('on');});
 },{threshold:.1,rootMargin:'0px 0px -48px 0px'});
 document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
+
+// HAMBURGER MENU
+const ham = document.getElementById('hamburger');
+const mob = document.getElementById('mobileMenu');
+const mClose = document.getElementById('menuClose');
+function openMobileMenu(){ ham.classList.add('open'); mob.classList.add('open'); document.body.style.overflow='hidden'; }
+function closeMobileMenu(){ ham.classList.remove('open'); mob.classList.remove('open'); document.body.style.overflow=''; }
+if(ham) ham.addEventListener('click', ()=>{ ham.classList.contains('open') ? closeMobileMenu() : openMobileMenu(); });
+if(mClose) mClose.addEventListener('click', closeMobileMenu);
 
 // ACTIVE NAV
 const secs=document.querySelectorAll('section[id]');
